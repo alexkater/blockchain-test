@@ -10,6 +10,7 @@ import UIKit
 
 extension UIView {
 
+    /// Method to active and enable constraints for a determined view
     func make(constraints: [NSLayoutConstraint]) {
         translatesAutoresizingMaskIntoConstraints = false
         constraints.forEach {

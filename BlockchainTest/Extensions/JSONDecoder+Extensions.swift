@@ -10,8 +10,8 @@ import Foundation
 
 extension JSONDecoder {
 
-    /// Common json decoder to use to decode xapo's api results
-    static var tonsser: JSONDecoder {
+    /// Common json decoder to use to decode blockchain's api results
+    static var blockchain: JSONDecoder {
         let decoder = JSONDecoder()
         decoder.keyDecodingStrategy = .convertFromSnakeCase
         decoder.dataDecodingStrategy = .base64

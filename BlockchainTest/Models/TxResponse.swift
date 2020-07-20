@@ -9,26 +9,32 @@
 import Foundation
 
 // MARK: - BitcoinResponse
-struct BitcoinResponse: Codable {
+/// Transaction response object, used to get transactions on `ApiService.Route.transactions`
+struct TxResponse: Codable {
     let addresses: [Address]
     let wallet: Wallet
-    let txs: [Tx]
+    let txs: [Transactions]
 }
 
 // MARK: - Address
+/// Address info on the `TxResponse` Object
 struct Address: Codable {
     let address: String
     let finalBalance: Int
 }
 
-// MARK: - Tx
-struct Tx: Codable {
+// MARK: - Transactions
+/// Transactions info
+struct Transactions: Codable {
     let hash: String
     let fee: Int
     let result, balance, time: Int
+
+    var isResultSent: Bool { result < 0 }
 }
 
 // MARK: - Wallet
+/// Info about the wallet retrieved
 struct Wallet: Codable {
     let finalBalance: Int
 }

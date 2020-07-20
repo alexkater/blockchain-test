@@ -10,38 +10,50 @@ import RxSwift
 import Alamofire
 import Foundation
 
+/// ApiService provide request on application
 protocol ApiServiceProtocol {
-//    func getFollowers(with lastSlug: String?) -> Single<[Follower]>
+
+    /// Get Transactions for a determined value
+    /// - Parameter xpub: xpub or address where to get transactions
+    func getTransactions(with xpub: String) -> Single<TxResponse>
 }
 
+/// Internal ApiError to handle different cases on the app
 enum ApiError: Error {
     case invalid
 }
 
+/// ApiServiceProtocol implementation
 class ApiService: ApiServiceProtocol {
-    enum Route: String {
-        case followers
 
-        private var basePath: String { "http://api.tonsser.com/58/users/peter-holm/" }
+    /// `Route` should contain all posible routes for api requests, this is a simple version on how can be done
+    enum Route {
+        case transactions(String)
+
+        /// Base path for all api requests
+        private var basePath: String { "https://blockchain.info" }
 
         var urlConvertible: URLConvertible {
-            basePath.appending(self.rawValue)
+            switch self {
+            case .transactions(let xpub):
+                return "\(basePath)/multiaddr?active=\(xpub)"
+            }
         }
     }
 
-//    func getFollowers(with lastSlug: String?) -> Single<[Follower]> {
-//        return Single.create { single in
-//            AF.request(Route.followers.urlConvertible).responseData(completionHandler: { (response) in
-//                if let error = response.error {
-//                    single(.error(error))
-//                } else if let data = response.data,
-//                    let followerResponse = try? JSONDecoder.tonsser.decode(FollowersResponse.self, from: data){
-//                    single(.success(followerResponse.followers))
-//                } else {
-//                    single(.error(ApiError.invalid))
-//                }
-//            })
-//            return Disposables.create()
-//        }
-//    }
+    func getTransactions(with xpub: String) -> Single<TxResponse> {
+        return Single.create { single in
+            AF.request(Route.transactions(xpub).urlConvertible).responseData(completionHandler: { (response) in
+                if let error = response.error {
+                    single(.error(error))
+                } else if let data = response.data,
+                    let response = try? JSONDecoder.blockchain.decode(TxResponse.self, from: data){
+                    single(.success(response))
+                } else {
+                    single(.error(ApiError.invalid))
+                }
+            })
+            return Disposables.create()
+        }
+    }
 }

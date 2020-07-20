@@ -9,27 +9,23 @@
 import UIKit
 import Foundation
 
-enum Route {
-    case followersList
+/// Navigation Route for different screens, here you should fill ViewController and ViewModel
+enum Route: Equatable {
+    /// Transactions list screen, used as main screen
+    case transactions
 
+    /// used to present or show on the viewController
     var viewController: UIViewController {
         switch self {
-        case .followersList:
-            let viewModel = FollowersViewModel(apiService: ServiceContainer.shared.apiService)
-            var viewController = FollowerViewController()
+        case .transactions:
+            let viewModel = TransactionsViewModel(
+                apiService: ServiceContainer.shared.apiService,
+                // TODO: This value should not be hardcoded, only for this test purpose
+                xpub: "xpub6CfLQa8fLgtouvLxrb8EtvjbXfoC1yqzH6YbTJw4dP7srt523AhcMV8Uh4K3TWSHz9oDWmn9MuJogzdGU3ncxkBsAC9wFBLmFrWT9Ek81kQ"
+            )
+            var viewController = TransactionsViewController()
             viewController.bind(toViewModel: viewModel)
             return viewController
-        }
-    }
-}
-
-extension Route: Equatable {
-    static func == (lhs: Route, rhs: Route) -> Bool {
-        switch (lhs, rhs) {
-        case (.followersList, .followersList):
-            return true
-        default:
-            return false
         }
     }
 }

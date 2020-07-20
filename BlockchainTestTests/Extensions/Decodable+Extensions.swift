@@ -20,7 +20,7 @@ extension Decodable {
 
         do {
             let data = try Data(contentsOf: URL(fileURLWithPath: path))
-            let object: Self = try JSONDecoder.tonsser.decode(Self.self, from: data)
+            let object: Self = try JSONDecoder.blockchain.decode(Self.self, from: data)
             return object
         } catch {
             print("""
@@ -41,7 +41,7 @@ extension Decodable {
         }
         do {
             let data = try Data(contentsOf: URL(fileURLWithPath: path))
-            return try JSONDecoder.tonsser.decode([Self].self, from: data)
+            return try JSONDecoder.blockchain.decode([Self].self, from: data)
         } catch {
             print("""
                 ---------------------------------

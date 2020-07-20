@@ -14,10 +14,10 @@ class ResponseSpec: QuickSpec {
 
 
     override func spec() {
-        var response: BitcoinResponse?
+        var response: TxResponse?
 
         beforeEach {
-            response = BitcoinResponse.map(fromJSONFileName: "BitcoinResponse")
+            response = TxResponse.map(fromJSONFileName: "BitcoinResponse")
         }
 
         context("Values") {
