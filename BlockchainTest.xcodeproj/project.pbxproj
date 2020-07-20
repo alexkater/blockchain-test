@@ -123,6 +123,15 @@
 			path = Pods;
 			sourceTree = "<group>";
 		};
+		A949E20E24C59F3C004885FA /* Screens */ = {
+			isa = PBXGroup;
+			children = (
+				A956068C24C0431700899733 /* Base */,
+				A956069124C0432000899733 /* Transactions */,
+			);
+			path = Screens;
+			sourceTree = "<group>";
+		};
 		A956065E24C042E900899733 = {
 			isa = PBXGroup;
 			children = (
@@ -149,8 +158,7 @@
 				A95606B624C0495E00899733 /* Models */,
 				A956069F24C0432800899733 /* Core */,
 				A956069C24C0432800899733 /* Extensions */,
-				A956069124C0432000899733 /* Transactions */,
-				A956068C24C0431700899733 /* Base */,
+				A949E20E24C59F3C004885FA /* Screens */,
 				A956066A24C042E900899733 /* AppDelegate.swift */,
 				A956066C24C042E900899733 /* SceneDelegate.swift */,
 				A956067324C042EB00899733 /* Assets.xcassets */,
