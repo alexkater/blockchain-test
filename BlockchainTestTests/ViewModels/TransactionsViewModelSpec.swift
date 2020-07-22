@@ -21,10 +21,14 @@ final class TransactionsViewModelSpec: QuickSpec {
 
         var viewModel: TransactionsViewModel!
         var apiService: ApiServiceMock!
+        let xpub = "xpub6CfLQa8fLgtouvLxrb8EtvjbXfoC1yqzH6YbTJw4dP7srt523AhcMV8Uh4K3TWSHz9oDWmn9MuJogzdGU3ncxkBsAC9wFBLmFrWT9Ek81kQ"
 
         beforeEach {
             apiService = ApiServiceMock()
-            viewModel = TransactionsViewModel(apiService: apiService)
+            viewModel = TransactionsViewModel(
+                apiService: apiService,
+                xpub: xpub
+            )
         }
 
         context("Sections") {
@@ -37,7 +41,10 @@ final class TransactionsViewModelSpec: QuickSpec {
                         return Disposables.create()
                     }
 
-                    viewModel = TransactionsViewModel(apiService: apiService)
+                    viewModel = TransactionsViewModel(
+                        apiService: apiService,
+                        xpub: xpub
+                    )
                 }
 
                 it("Success") {
@@ -45,20 +52,32 @@ final class TransactionsViewModelSpec: QuickSpec {
                     expect(sections).toEventuallyNot(beNil())
                     expect(sections?.count).toEventually(equal(2))
                     expect(sections?[0].title).toEventually(equal("Addresses"))
-                    expect(sections?[0].cells.first?.title).toEventually(equal("xpub6CfLQa8fLgtouvLxrb8EtvjbXfoC1yqzH6YbTJw4dP7srt523AhcMV8Uh4K3TWSHz9oDWmn9MuJogzdGU3ncxkBsAC9wFBLmFrWT9Ek81kQ"))
-                    expect(sections?[0].cells.first?.subtitle).toEventually(equal("8549"))
+                    expect(sections?[0].items.first?.title).toEventually(equal(xpub))
+                    expect(sections?[0].items.first?.subtitle).toEventually(equal("Balance: 0.00008549"))
 
                     expect(sections?[1].title).toEventually(equal("Transactions"))
 
-                    expect(sections?[1].cells.first?.title).toEventually(equal("-612687"))
-                    expect(sections?[1].cells.first?.subtitle).toEventually(equal(""))
+                    expect(sections?[1].items.first?.title).toEventually(equal("Amount: 0.00612687"))
+                    expect(sections?[1].items.first?.subtitle).toEventually(equal("Sent"))
                 }
             }
         }
 
         context("Initial state") {
+
+            beforeEach {
+                apiService.getTransactionsMock = Single.create { (single) -> Disposable in
+                    single(.success(TxResponse.responseMock))
+                    return Disposables.create()
+                }
+
+                viewModel = TransactionsViewModel(
+                    apiService: apiService,
+                    xpub: xpub
+                )
+            }
             it("Built propertly") {
-                expect(viewModel.title.toBlocking().first()).to(equal("8549"))
+                expect(try viewModel.title.toBlocking().first()).to(equal("Final Balance: 0.00008549"))
             }
         }
     }
